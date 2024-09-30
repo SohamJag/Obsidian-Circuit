@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obsidian Circuit Web App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"> 
+    <style>
+        /* Base Styles - Dark Theme */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0d0d0d;
+            margin: 0;
+            padding: 0;
+            color: #ccc;
+            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQYV2NkQAX/GZH////+847gYAARiYmIQqbu0hMAAAAASUVORK5CYII=");
+            background-size: cover;
+            background-attachment: fixed;
+            transition: background-color 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(34, 34, 34, 0.9); /* Glassmorphism effect */
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Header */
+        header {
+            background-color: #000;
+            color: #00ff6a;
+            padding: 20px 0;
+            text-align: center;
+            background: linear-gradient(to bottom, #000, #111);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 3em;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 15px #00ff6a;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #00ff6a; }
+            to { text-shadow: 0 0 20px #00ff6a; }
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0 0;
+        }
+
+        nav li {
+            display: inline;
+            margin-right: 25px;
+        }
+
+        nav a {
+            color: #00ff6a;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #00ffff;
+        }
+
+        /* Main Content */
+        main {
+            padding: 20px 0;
+        }
+
+        h2 {
+            color: #00ffff;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #00ffff;
+            padding-bottom: 10px;
+            font-size: 1.8em;
+            text-transform: uppercase;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: rgba(41, 41, 41, 0.6); /* Glassmorphism effect */
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 15px rgba(0, 255, 106, 0.5);
+        }
+
+        .card h3 {
+            color: #00ffff;
+            font-size: 1.5em;
+            margin-top: 0;
+        }
+
+        /* File Analysis */
+        .drop-area {
+            border: 2px dashed #00ff6a;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.3); /* Glassmorphism effect */
+        }
+
+        .drop-area:hover {
+            background-color: #3d3d3d;
+        }
+
+        .drop-area i {
+            font-size: 4em;
+            margin-bottom: 10px;
+        }
+
+        .drop-area p {
+            font-size: 1.2em;
+            margin-bottom: 0;
+        }
+
+        .drop-area input[type="file"] {
+            display: none;
+        }
+
+        /* Network Analysis */
+        #network-graph {
+            height: 400px;
+            background-color: #111;
+            border: 1px solid #00ff6a;
+            border-radius: 5px;
+        }
+
+        /* Log Analysis */
+        #log-input {
+            width: 100%;
+            height: 250px;
+            padding: 15px;
+            background-color: #111;
+            color: #00ff6a;
+            border: 1px solid #00ff6a;
+            border-radius: 5px;
+            font-family: 'Roboto Mono', monospace;
+            resize: vertical;
+        }
+
+        #analyze-logs {
+            background-color: #00ff6a;
+            color: #000;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        #analyze-logs:hover {
+            background-color: #00cc00;
+        }
+
+        /* Reports */
+        #reports {
+            padding-top: 20px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #000;
+            color: #00ff6a;
+            padding: 15px 0;
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9em;
+            border-top: 1px solid #00ff6a;
+        }
+
+        /* News Items */
+        .news-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-left: 4px solid #00ff6a;
+        }
+
+        .news-item h4 {
+            margin-top: 0;
+            color: #00ffff;
+            font-size: 1.3em;
+        }
+
+        .news-item a {
+            color: #00ff6a;
+            text-decoration: none;
+        }
+
+        .news-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* Glassmorphism Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        /* Add subtle animations to buttons */
+        button, input[type="file"] {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <h1>Obsidian Circuit</h1>
+        <nav>
+            <ul>
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#file-analysis">File Analysis</a></li>
+                <li><a href="#network-analysis">Network Analysis</a></li>
+                <li><a href="#log-analysis">Log Analysis</a></li>
+                <li><a href="#reports">Reports</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <section id="dashboard">
+            <h2>Dashboard</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Recent Cases</h3>
+                    <ul>
+                        <li>Case 1</li>
+                        <li>Case 2</li>
+                        <li>Case 3</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Threat Intelligence</h3>
+                    <div id="threat-intelligence-news"></div>
+                </div>
+                <div class="card">
+                    <h3>System Status</h3>
+                    <p>All systems operational.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="file-analysis">
+            <h2>File Analysis</h2>
+            <div class="glass">
+                <div class="drop-area" 
+                     onclick="document.querySelector('#file-input').click();" 
+ondragover="event.preventDefault();" 
+                     ondrop="handleDrop(event)">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Drag and drop files here or click to upload</p>
+                    <input id="file-input" type="file" name="file" multiple style="display: none;" onchange="handleFiles(this.files)">
+                </div>
+            
+                <!-- Display uploaded file info here -->
+                <div id="file-list"></div>
+            </div>
+            
+            <script>
+                const dropArea = document.querySelector('.drop-area');
+                const fileInput = document.querySelector('#file-input');
+                const fileListDisplay = document.querySelector('#file-list');
+            
+                // Handle the drop event (drag and drop)
+                function handleDrop(event) {
+                    event.preventDefault();
+                    const files = event.dataTransfer.files;
+                    if (files.length) {
+                        handleFiles(files); // Process dropped files
+                    }
+                }
+            
+                // Process and display file properties
+                function handleFiles(files) {
+                    fileListDisplay.innerHTML = ''; // Clear previous file info
+                    Array.from(files).forEach(file => {
+                        const fileInfo = document.createElement('div');
+                        fileInfo.classList.add('file-info');
+                        fileInfo.innerHTML = `
+                            <p><strong>Name:</strong> ${file.name}</p>
+                            <p><strong>Size:</strong> ${(file.size / 1024).toFixed(2)} KB</p>
+                            <p><strong>Last Modified:</strong> ${new Date(file.lastModified).toLocaleDateString()}</p>
+                        `;
+                        fileListDisplay.appendChild(fileInfo);
+                    });
+                }
+            </script>
+        </section>
+
+        <section id="network-analysis">
+            <h2>Network Analysis</h2>
+            <div id="network-graph"></div>
+        </section>
+
+        <section id="log-analysis">
+            <h2>Log Analysis</h2>
+            <textarea id="log-input" placeholder="Paste logs here"></textarea>
+            <button id="analyze-logs">Analyze</button>
+            <div id="log-analysis-results"></div>
+        </section>
+
+        <section id="reports">
+            <h2>Reports</h2>
+            <p>Generate and manage investigation reports.</p>
+        </section>
+
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2024 Obsidian Circuit. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script>
+    const handleDrop = event => {
+        event.preventDefault();
+        const file = event.dataTransfer.files[0];
+        analyzeFile({ target: { files: [file] } });
+    };
+
+    const analyzeFile = event => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const apiKey = '73ec9afa71dfb02cfa0790492ac7039f71b53610f893d5ccfbde8800e49f1dcb';
+        const url = https://www.virustotal.com/vtapi/v2/file/scan;
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'x-apikey': apiKey,
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('file-status').innerText = 'File uploaded successfully.';
+            document.getElementById('analysis-result').innerHTML = <strong>Analysis Results:</strong> ${JSON.stringify(data, null, 2)};
+        })
+        .catch(error => {
+            document.getElementById('file-status').innerText = 'File upload failed.';
+            console.error('Error:', error);
+        });
+    };
+</script>
+</body>
+</html>
